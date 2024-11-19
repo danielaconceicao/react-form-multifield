@@ -14,26 +14,26 @@ function App() {
   const [formData, setFormData] = useState(initialFormData)
   const [articles, setArticles] = useState([])
 
-  function handleTagChange(e){
-    const {value, checked} = e.target
+  function handleTagChange(e) {
+    const { value, checked } = e.target
     setFormData({
       ...formData,
       tags: checked ? [...articles.tags, value] : articles.tags.filter(tag => tag != value)
     })
   }
 
-  function handleSubmit(e){
+  function handleSubmit(e) {
     e.preventDefault()
     setArticles([...articles, formData])
     setFormData(initialFormData)
   }
 
-  function handleTrashTaskClick(e){
-    const trash = e.target.getAttribute('data-index')
+  function handleTrashTaskClick(e) {
+    const trash = Number(e.target.getAttribute('data-index'))
 
-    const newData = formData.filter((task, index) => index != trash)
+    const newData = articles.filter((task, index) => index != trash)
 
-    setFormData(newData)
+    setArticles(newData)
   }
 
   return (
@@ -62,7 +62,7 @@ function App() {
                 placeholder="title blog"
                 required
                 value={formData.title}
-              onChange={e => setFormData({...formData, title: e.target.value})}
+                onChange={e => setFormData({ ...formData, title: e.target.value })}
               />
               <small id="titlehelper" className="form-text text-muted"></small>
             </div>
@@ -77,14 +77,14 @@ function App() {
                 aria-describedby="imagehelper"
                 placeholder="/images/1.jpg"
                 value={formData.image}
-              onChange={e => setFormData({...formData, image: e.target.value})}
+                onChange={e => setFormData({ ...formData, image: e.target.value })}
               />
               <small id="imagehelper" className="form-text text-muted"></small>
             </div>
 
             <div className="mb-3">
               <label htmlFor="category" className="form-label">Category</label>
-              <select className="form-select" aria-label="Default select example" name='category' value={formData.category} onChange={e => setFormData({...formData, category: e.target.value})} >
+              <select className="form-select" aria-label="Default select example" name='category' value={formData.category} onChange={e => setFormData({ ...formData, category: e.target.value })} >
 
                 {/* <option selected>Open this category</option> */}
                 <option value="1">One</option>
@@ -103,22 +103,22 @@ function App() {
                 name="content"
                 id="content"
                 rows="3"
-              value={formData.content}
-              onChange={e => setFormData({...formData, content: e.target.value})}
+                value={formData.content}
+                onChange={e => setFormData({ ...formData, content: e.target.value })}
               ></textarea>
             </div>
 
             <div className="form-check">
-              <input className="form-check-input" type="radio" name="radioDefault" id="radioDefault1" value={formData.tags} onChange={handleTagChange}/>
-                <label className="form-check-label" htmlFor="radioDefault1">
-                  Default radio
-                </label>
+              <input className="form-check-input" type="radio" name="radioDefault" id="radioDefault1" value={formData.tags} onChange={handleTagChange} />
+              <label className="form-check-label" htmlFor="radioDefault1">
+                Default radio
+              </label>
             </div>
             <div className="form-check mb-4">
               <input className="form-check-input" type="radio" name="radioDefault" id="radioDefault2" checked value={formData.tags} onChange={handleTagChange} />
-                <label className="form-check-label" htmlFor="radioDefault2">
-                  Default checked radio
-                </label>
+              <label className="form-check-label" htmlFor="radioDefault2">
+                Default checked radio
+              </label>
             </div>
 
 
@@ -129,7 +129,7 @@ function App() {
                 type="checkbox"
                 className="form-check-input"
                 value={formData.published}
-                onChange={e => setFormData({...formData, checkbox: e.target.checked})}
+                onChange={e => setFormData({ ...formData, checkbox: e.target.checked })}
 
               />
               <label className="form-check-label" htmlFor=""> Published </label>
@@ -147,14 +147,22 @@ function App() {
         </form>
 
         <ul className='list-group'>
-          {articles.map((task, index) => <li key={index} className='list-group-item d-flex justify-content-between'>
-            {task.title}
-            {task.image}
-            {task.content}
-            {task.category}
+          {articles.map((task, index) => <li key={index} className='list-group-item d-flex justify-content-between my-4'>
+
+            
+            {/* {task.category}
             {task.tags}
-            {task.published}
-            <button onClick={handleTrashTaskClick} data-index={index} className='btn btn-danger'></button>
+            {task.published} */}
+
+            <div className="card">
+              <img src={task.image} className="card-img-top" />
+              <div className="card-body">
+                <h5 className="card-title">{task.title}</h5>
+                <p className="card-text">{task.content}</p>
+                <p className='card-text'>{task.published}</p>
+                <button onClick={handleTrashTaskClick} data-index={index} className='btn btn-danger'><i className="bi bi-trash"></i></button>
+              </div>
+            </div>
           </li>)}
         </ul>
       </div>
