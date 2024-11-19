@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import './App.css'
 
-const initialTasks = {
+const initialFormData = {
   title: '',
   image: '',
   content: '',
@@ -11,21 +11,21 @@ const initialTasks = {
 }
 
 function App() {
-  const [formData, setFormData] = useState(initialTasks)
+  const [formData, setFormData] = useState(initialFormData)
   const [articles, setArticles] = useState([])
 
   function handleTagChange(e){
     const {value, checked} = e.target
     setFormData({
       ...formData,
-      tags: checked ? [...formData.tags, value] : formData.tags.filter(tag => tag != value)
+      tags: checked ? [...articles.tags, value] : articles.tags.filter(tag => tag != value)
     })
   }
 
   function handleSubmit(e){
     e.preventDefault()
     setArticles([...articles, formData])
-    
+    setFormData(initialFormData)
   }
 
   function handleTrashTaskClick(e){
@@ -52,19 +52,19 @@ function App() {
         <form onSubmit={handleSubmit}>
           <div className="mb-3">
             <div className="mb-3">
-              <label htmlFor="name" className="form-label">Title</label>
+              <label htmlFor="title" className="form-label">Title</label>
               <input
                 type="text"
                 className="form-control"
-                name="name"
-                id="name"
-                aria-describedby="namehelper"
+                name="title"
+                id="title"
+                aria-describedby="tatlehelper"
                 placeholder="title blog"
                 required
-                value={formData.name}
+                value={formData.title}
               onChange={e => setFormData({...formData, title: e.target.value})}
               />
-              <small id="namehelper" className="form-text text-muted"></small>
+              <small id="titlehelper" className="form-text text-muted"></small>
             </div>
 
             <div className="mb-3">
@@ -86,7 +86,7 @@ function App() {
               <label htmlFor="category" className="form-label">Category</label>
               <select className="form-select" aria-label="Default select example" name='category' value={formData.category} onChange={e => setFormData({...formData, category: e.target.value})} >
 
-                <option selected>Open this category</option>
+                {/* <option selected>Open this category</option> */}
                 <option value="1">One</option>
                 <option value="2">Two</option>
                 <option value="3">Three</option>
@@ -148,8 +148,12 @@ function App() {
 
         <ul className='list-group'>
           {articles.map((task, index) => <li key={index} className='list-group-item d-flex justify-content-between'>
-            {task}
-
+            {task.title}
+            {task.image}
+            {task.content}
+            {task.category}
+            {task.tags}
+            {task.published}
             <button onClick={handleTrashTaskClick} data-index={index} className='btn btn-danger'></button>
           </li>)}
         </ul>
